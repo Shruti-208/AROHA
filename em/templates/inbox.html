@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Your Inbox - NeatEdge</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9fafb;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .header h1 {
+      font-size: 2rem;
+      font-weight: 700;
+    }
+    .status-badge {
+      background-color: #d1fae5;
+      color: #065f46;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.875rem;
+      margin-left: 8px;
+    }
+    .email-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .email-table th, .email-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid #e5e7eb;
+      text-align: left;
+      vertical-align: middle;
+    }
+    .email-table th {
+      background-color: #f3f4f6;
+      font-weight: 600;
+    }
+    .category-badge {
+      padding: 4px 8px;
+      border-radius: 12px;
+      color: white;
+      font-weight: 600;
+      font-size: 0.75rem;
+      display: inline-block;
+    }
+    .category-Spam { background-color: #ef4444; }
+    .category-Important { background-color: #22c55e; }
+    .category-Social { background-color: #3b82f6; }
+    .category-Promotional { background-color: #f59e0b; }
+    .category-Newsletter { background-color: #8b5cf6; }
+    .star-icon {
+      cursor: pointer;
+      font-size: 1.25rem;
+      color: gray;
+      user-select: none;
+      transition: color 0.3s ease;
+    }
+    .star-icon.starred {
+      color: gold;
+    }
+    .filter-buttons {
+      margin-bottom: 16px;
+    }
+    .filter-button {
+      background-color: #e5e7eb;
+      border-radius: 9999px;
+      padding: 6px 12px;
+      margin-right: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.875rem;
+      border: none;
+    }
+    .filter-button.active {
+      background-color: #1f2937;
+      color: white;
+    }
+    .actions {
+      margin-bottom: 16px;
+      display: flex;
+      gap: 12px;
+    }
+    .actions button {
+      background-color: #1f2937;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .actions button.delete {
+      background-color: #ef4444;
+    }
+    .sidebar {
+      background: white;
+      border-radius: 8px;
+      padding: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      margin-left: 20px;
+      width: 280px;
+      height: fit-content;
+    }
+    .layout {
+      display: flex;
+    }
+    .email-list-container {
+      flex-grow: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div>
+        <a href="/landing" style="color:#7e5bef; text-decoration:none;">&larr; Back to Home</a>
+        <h1>Your Inbox <span class="status-badge" id="backendStatus">Backend Connected</span></h1>
+        <div id="userEmail" style="color: #6b7280; font-weight: 600;"></div>
+      </div>
+      <div class="actions">
+        <button id="disconnectBtn">Disconnect</button>
+        <button id="refreshBtn">Refresh</button>
+        <button id="smartCleanupBtn">Run Smart Cleanup</button>
+        <button id="deleteSelectedBtn" class="delete" disabled>Delete Selected (0)</button>
+      </div>
+    </div>
+
+    <div class="layout">
+      <div class="email-list-container">
+        <div class="filter-buttons" id="filterButtons">
+          <button class="filter-button active" data-filter="All">All</button>
+          <button class="filter-button" data-filter="Important">Important</button>
+          <button class="filter-button" data-filter="Social">Social</button>
+          <button class="filter-button" data-filter="Promotional">Promotional</button>
+          <button class="filter-button" data-filter="Spam">Spam</button>
+        </div>
+
+        <table class="email-table" id="emailTable">
+          <thead>
+            <tr>
+              <th><input type="checkbox" id="selectAllCheckbox" /></th>
+              <th>Sender</th>
+              <th>Subject & Preview</th>
+              <th>Category</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="emailTableBody">
+            <!-- Emails will be populated here -->
+          </tbody>
+        </table>
+      </div>
+
+      <div class="sidebar">
+        <h3>Email Categories</h3>
+        <canvas id="categoryChart" width="250" height="250"></canvas>
+
+        <h3 style="margin-top: 24px;">AI Learning Status</h3>
+        <div id="aiLearningStatus" style="font-size: 0.875rem; color: #4b5563;">
+          <span class="status-badge" id="backendSyncStatus">Backend Sync Complete</span>
+          <p>Based on your interactions</p>
+          <p>Personalized Rules</p>
+          <p>No personalized rules yet</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    let emails = [];
+    let filteredEmails = [];
+    let selectedEmails = new Set();
+    let currentFilter = "All";
+    let userEmail = "";
+
+    const emailTableBody = document.getElementById("emailTableBody");
+    const filterButtons = document.getElementById("filterButtons");
+    const selectAllCheckbox = document.getElementById("selectAllCheckbox");
+    const deleteSelectedBtn = document.getElementById("deleteSelectedBtn");
+    const backendStatus = document.getElementById("backendStatus");
+    const backendSyncStatus = document.getElementById("backendSyncStatus");
+    const userEmailDiv = document.getElementById("userEmail");
+
+    function renderEmails() {
+      emailTableBody.innerHTML = "";
+      filteredEmails.forEach(mail => {
+        const tr = document.createElement("tr");
+
+        const checked = selectedEmails.has(mail.id) ? "checked" : "";
+        tr.innerHTML = `
+          <td><input type="checkbox" class="email-checkbox" data-id="${mail.id}" ${checked} /></td>
+          <td>${mail.from}</td>
+          <td>
+            <div><strong>${mail.subject}</strong></div>
+            <div style="color:#6b7280; font-size:0.9rem;">${mail.body}</div>
+          </td>
+          <td><span class="category-badge category-${mail.category}">${mail.category}</span></td>
+          <td><span class="star-icon ${mail.starred ? "starred" : ""}" data-id="${mail.id}">&#9733;</span></td>
+        `;
+        emailTableBody.appendChild(tr);
+      });
+      updateDeleteButton();
+      addEventListeners();
+    }
+
+    function addEventListeners() {
+      document.querySelectorAll(".email-checkbox").forEach(checkbox => {
+        checkbox.addEventListener("change", (e) => {
+          const id = e.target.getAttribute("data-id");
+          if (e.target.checked) selectedEmails.add(id);
+          else selectedEmails.delete(id);
+          updateDeleteButton();
+          updateSelectAllCheckbox();
+        });
+      });
+
+      document.querySelectorAll(".star-icon").forEach(star => {
+        star.addEventListener("click", (e) => {
+          const id = e.target.getAttribute("data-id");
+          const mail = emails.find(m => m.id === id);
+          if (!mail) return;
+          mail.starred = !mail.starred;
+          e.target.classList.toggle("starred");
+        });
+      });
+    }
+
+    function updateDeleteButton() {
+      deleteSelectedBtn.disabled = selectedEmails.size === 0;
+      deleteSelectedBtn.textContent = `Delete Selected (${selectedEmails.size})`;
+    }
+
+    function updateSelectAllCheckbox() {
+      const allChecked = filteredEmails.length > 0 && filteredEmails.every(mail => selectedEmails.has(mail.id));
+      selectAllCheckbox.checked = allChecked;
+    }
+
+    selectAllCheckbox.addEventListener("change", (e) => {
+      if (e.target.checked) {
+        filteredEmails.forEach(mail => selectedEmails.add(mail.id));
+      } else {
+        filteredEmails.forEach(mail => selectedEmails.delete(mail.id));
+      }
+      renderEmails();
+    });
+
+    filterButtons.addEventListener("click", (e) => {
+      if (e.target.classList.contains("filter-button")) {
+        currentFilter = e.target.getAttribute("data-filter");
+        document.querySelectorAll(".filter-button").forEach(btn => btn.classList.remove("active"));
+        e.target.classList.add("active");
+        applyFilter();
+      }
+    });
+
+    function applyFilter() {
+      if (currentFilter === "All") {
+        filteredEmails = emails;
+      } else {
+        filteredEmails = emails.filter(mail => mail.category === currentFilter);
+      }
+      selectedEmails.clear();
+      renderEmails();
+      updateSelectAllCheckbox();
+    }
+
+    document.getElementById("disconnectBtn").addEventListener("click", () => {
+      // Redirect to landing page and clear session if needed
+      window.location.href = "/landing";
+    });
+
+    document.getElementById("refreshBtn").addEventListener("click", async () => {
+      await fetchEmails();
+    });
+
+    document.getElementById("smartCleanupBtn").addEventListener("click", async () => {
+      if (emails.length === 0) return alert("No emails fetched yet.");
+
+      const response = await fetch("/classify-emails", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({ emails })
+      });
+      const classifiedEmails = await response.json();
+
+      // Update emails with categories and starred status
+      emails = classifiedEmails.map(mail => {
+        const original = emails.find(e => e.id === mail.id);
+        mail.starred = original ? original.starred : false;
+        return mail;
+      });
+
+      applyFilter();
+    });
+
+    document.getElementById("deleteSelectedBtn").addEventListener("click", async () => {
+      if (selectedEmails.size === 0) return;
+
+      if (!confirm(`Delete ${selectedEmails.size} selected emails?`)) return;
+
+      const response = await fetch("/delete-emails", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+          emailIds: Array.from(selectedEmails),
+          email: userEmail,
+          password: "" // Password should be handled securely, omitted here for demo
+        })
+      });
+      const result = await response.json();
+      alert(result.message);
+
+      // Refresh emails after deletion
+      await fetchEmails();
+    });
+
+    async function fetchEmails() {
+      try {
+        const formData = new FormData();
+        formData.append("email", userEmail);
+        formData.append("password", ""); // Password should be handled securely, omitted here for demo
+
+        const response = await fetch("/fetch-emails", {
+          method: "POST",
+          body: formData
+        });
+        if (!response.ok) throw new Error("Failed to fetch emails.");
+
+        emails = await response.json();
+        applyFilter();
+      } catch (err) {
+        alert(err.message);
+      }
+    }
+
+    // On page load, get user email from query param or session (simplified here)
+    window.onload = () => {
+      const params = new URLSearchParams(window.location.search);
+      userEmail = params.get("email") || "";
+      if (!userEmail) {
+        alert("No user email found. Redirecting to home.");
+        window.location.href = "/landing";
+        return;
+      }
+      document.getElementById("userEmail").textContent = userEmail;
+      fetchEmails();
+    };
+  </script>
+</body>
+</html>
