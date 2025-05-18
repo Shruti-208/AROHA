@@ -1,0 +1,54 @@
+// Patch for templates/inbox.html JavaScript to update total CO2 dynamically and pie chart updates
+
+// Add this function to update total CO2 display:
+function updateTotalCO2(totalCO2) {
+  if (typeof totalCO2 === "number") {
+    totalCO2Div.textContent = `Total CO2 Contribution: ${totalCO2.toFixed(6)} kg`;
+  } else {
+    // Calculate total CO2 from emails if not provided
+    const total = emails.reduce((sum, mail) => sum + (mail.co2 || 0), 0);
+    totalCO2Div.textContent = `Total CO2 Contribution: ${total.toFixed(6)} kg`;
+  }
+}
+
+// Modify fetchEmails function to call updateTotalCO2 with data.total_co2:
+async function fetchEmails() {
+  if (!userEmail) {
+    alert("User email not found. Please reconnect.");
+    return;
+  }
+  if (!userPassword) {
+    userPassword = prompt("Please enter your app password for email operations:");
+    if (!userPassword) {
+      alert("Password is required.");
+      return;
+    }
+  }
+  const formData = new FormData();
+  formData.append("email", userEmail);
+  formData.append("password", userPassword);
+
+  const response = await fetch("/fetch-emails", {
+    method: "POST",
+    body: formData
+  });
+  const data = await response.json();
+  if (data.error) {
+    alert("Error fetching emails: " + data.error);
+    return;
+  }
+  emails = data.emails;
+  currentFilter = "All";
+  selectedEmails.clear();
+  applyFilter();
+  updateTotalCO2(data.total_co2);
+}
+
+// Call updateTotalCO2() inside renderEmails() to update display after rendering emails:
+function renderEmails() {
+  // existing code to render emails...
+  updateDeleteButton();
+  addEventListeners();
+  updatePieChart();
+  updateTotalCO2();
+}

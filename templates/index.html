@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Connect Your Email - NeatEdge</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9fafb;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 600px;
+      margin: 40px auto;
+      background: white;
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .btn {
+      background-color: #1f2937;
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      width: 100%;
+      margin-top: 12px;
+    }
+    .btn:disabled {
+      background-color: #9ca3af;
+      cursor: not-allowed;
+    }
+    .email-provider-btn {
+      padding: 8px 16px;
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      cursor: pointer;
+      margin-right: 8px;
+      background-color: white;
+      font-weight: 600;
+    }
+    .email-provider-btn.selected {
+      background-color: #1f2937;
+      color: white;
+      border-color: #1f2937;
+    }
+    .status {
+      margin-top: 12px;
+      font-weight: 600;
+      color: green;
+    }
+    .error {
+      margin-top: 12px;
+      font-weight: 600;
+      color: red;
+    }
+    .email-list {
+      margin-top: 24px;
+    }
+    .email-item {
+      border-bottom: 1px solid #e5e7eb;
+      padding: 12px 0;
+    }
+    .email-item:last-child {
+      border-bottom: none;
+    }
+    .email-subject {
+      font-weight: 600;
+    }
+    .email-preview {
+      color: #6b7280;
+      font-size: 0.9rem;
+    }
+    .header {
+      margin-bottom: 24px;
+    }
+    .header h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .header p {
+      color: #6b7280;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <a href="/landing" style="color:#7e5bef; text-decoration:none;">&larr; Back to Home</a>
+      <h1>Connect Your Email</h1>
+      <p>Sign in to analyze and clean up your emails</p>
+    </div>
+
+  <form method="POST" action="/connect" id="connectForm">
+    <div>
+      <label>Email Provider</label><br />
+      <button type="button" class="email-provider-btn selected" id="gmailBtn">Gmail</button>
+      <button type="button" class="email-provider-btn" id="outlookBtn">Outlook</button>
+      <button type="button" class="email-provider-btn" id="yahooBtn">Yahoo</button>
+    </div>
+
+    <div style="margin-top: 16px;">
+      <input type="email" name="email" id="emailInput" placeholder="your.email@example.com" required style="width: 100%; padding: 8px; border-radius: 8px; border: 1px solid #d1d5db;" />
+    </div>
+
+    <div style="margin-top: 16px;">
+      <input type="password" name="password" id="passwordInput" placeholder="Password" required style="width: 100%; padding: 8px; border-radius: 8px; border: 1px solid #d1d5db;" />
+    </div>
+
+    <button type="submit" class="btn" id="connectBtn">Connect account</button>
+    <button type="button" class="btn" id="disconnectBtn" style="display:none; background-color:#ef4444;">Disconnect</button>
+
+    <div id="statusMessage" class="status" style="display:none;"></div>
+    <div id="errorMessage" class="error" style="display:none;"></div>
+    <div id="connectingIcon" style="display:none; margin-top: 12px; font-weight: 600; color: #065f46;">
+      <svg xmlns="http://www.w3.org/2000/svg" style="margin: auto; background: none; display: block;" width="24" height="24" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+        <circle cx="50" cy="50" r="32" stroke-width="8" stroke="#065f46" stroke-dasharray="50.26548245743669 50.26548245743669" fill="none" stroke-linecap="round">
+          <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1s" values="0 50 50;360 50 50" keyTimes="0;1"></animateTransform>
+        </circle>
+      </svg>
+      Connecting...
+    </div>
+  </form>
+
+    <div class="email-list" id="emailList" style="display:none;">
+      <h2>Your Emails</h2>
+      <div id="emailsContainer"></div>
+    </div>
+  </div>
+
+  <script>
+    let selectedProvider = "Gmail";
+
+    const gmailBtn = document.getElementById("gmailBtn");
+    const outlookBtn = document.getElementById("outlookBtn");
+    const yahooBtn = document.getElementById("yahooBtn");
+
+    function selectProvider(provider) {
+      selectedProvider = provider;
+      gmailBtn.classList.remove("selected");
+      outlookBtn.classList.remove("selected");
+      yahooBtn.classList.remove("selected");
+      if (provider === "Gmail") gmailBtn.classList.add("selected");
+      else if (provider === "Outlook") outlookBtn.classList.add("selected");
+      else if (provider === "Yahoo") yahooBtn.classList.add("selected");
+    }
+
+    gmailBtn.addEventListener("click", () => selectProvider("Gmail"));
+    outlookBtn.addEventListener("click", () => selectProvider("Outlook"));
+    yahooBtn.addEventListener("click", () => selectProvider("Yahoo"));
+
+    // Add loading spinner on connect button click
+    const connectForm = document.getElementById("connectForm");
+    const connectBtn = document.getElementById("connectBtn");
+    const connectingIcon = document.getElementById("connectingIcon");
+
+    connectForm.addEventListener("submit", () => {
+      connectBtn.disabled = true;
+      connectBtn.textContent = "Connecting...";
+      connectingIcon.style.display = "block";
+    });
+  </script>
+</body>
+</html>

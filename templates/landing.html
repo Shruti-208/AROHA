@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NeatEdge</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-6px); }
+    }
+    @keyframes pulse-slow {
+      0%, 100% { opacity: 0.1; transform: scale(1); }
+      50% { opacity: 0.2; transform: scale(1.1); }
+    }
+
+    .animate-fade-in-up { animation: fadeInUp 1s ease forwards; }
+    .animate-float { animation: float 3s ease-in-out infinite; }
+    .animate-pulse-slow { animation: pulse-slow 4s ease-in-out infinite; }
+
+    .animate-delay-200 { animation-delay: 0.2s; }
+    .animate-delay-400 { animation-delay: 0.4s; }
+    .animate-delay-500 { animation-delay: 0.5s; }
+
+    .bg-neatpurple { background-color: #7e5bef; }
+    .bg-neatblue { background-color: #4f46e5; }
+    .bg-neatgreen { background-color: #10b981; }
+    .from-neatpurple { --tw-gradient-from: #7e5bef; }
+    .to-neatblue { --tw-gradient-to: #4f46e5; }
+
+  </style>
+  <style>
+    @keyframes bubble-move {
+     0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+   }
+    .animate-bubble-move {
+      animation: bubble-move 4s ease-in-out infinite;
+   }
+    .animation-delay-1000 {
+      animation-delay: 1s;
+   }
+  </style>
+</head>
+<body class="bg-white text-gray-800">
+
+  <!-- HEADER -->
+  <header class="relative flex flex-col items-center justify-center min-h-[60vh] px-4 py-20 text-white overflow-hidden" id="home">
+    <div class="absolute inset-0 bg-gradient-to-r from-purple-700 via-purple-900 to-blue-700"></div>
+    <!-- Bubble animation circles -->
+    <div class="absolute top-10 left-10 w-6 h-6 bg-purple-400 rounded-full opacity-70 animate-bubble-move"></div>
+    <div class="absolute top-20 right-20 w-4 h-4 bg-purple-300 rounded-full opacity-60 animate-bubble-move animation-delay-1000"></div>
+    <div class="relative z-10 max-w-4xl text-center">
+      <h1 class="text-5xl sm:text-6xl lg:text-7xl font-bold mb-4 animate-fade-in-up drop-shadow-[0_0_10px_rgba(126,91,239,0.8)]">Welcome to NeatEdge</h1>
+      <p class="text-lg sm:text-xl md:text-2xl mb-8 animate-fade-in-up animate-delay-200 text-purple-200 drop-shadow-[0_0_6px_rgba(126,91,239,0.7)]">
+        Smarter, Greener Email Management – All on the Edge
+      </p>
+      <div class="flex flex-wrap justify-center gap-4">
+        <a href="#features" class="bg-white text-purple-700 px-6 py-3 rounded-lg font-semibold hover:bg-purple-100 animate-fade-in-up animate-delay-400 shadow-lg hover:shadow-purple-500 transition-shadow">Learn More</a>
+        <a href="/index" class="bg-purple-700 text-white px-6 py-3 rounded-lg font-semibold hover:bg-purple-800 animate-fade-in-up animate-delay-500 shadow-lg hover:shadow-purple-900 transition-shadow">Clean Your Inbox</a>
+        <a href="/home" class="bg-purple-700 text-white px-6 py-3 rounded-lg font-semibold hover:bg-purple-800 animate-fade-in-up animate-delay-500 shadow-lg hover:shadow-purple-900 transition-shadow">clean ur file explorer</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- FEATURES -->
+  <section class="py-20 px-4 bg-gradient-to-b from-white to-gray-50" id="features">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl font-bold mb-4 relative inline-block">
+          Why NeatEdge?
+          <div class="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 via-blue-500 to-purple-300 rounded-full"></div>
+        </h2>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto">Experience email management that's smarter, greener, and fully private</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8" id="feature-cards"></div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="py-20 px-4 bg-gradient-to-b from-gray-50 to-gray-100" id="how-it-works">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl font-bold mb-4 inline-block relative">
+          How It Works
+          <div class="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 via-blue-500 to-purple-300 rounded-full"></div>
+        </h2>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto">Our intelligent system transforms your email experience in four simple steps</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8" id="steps"></div>
+    </div>
+  </section>
+
+  <!-- DEMO SECTION -->
+  <section class="py-20 px-4 bg-gradient-to-r from-purple-300 via-purple-200 to-purple-100" id="demo">
+    <div id="demoRef" class="max-w-4xl mx-auto text-center transition-all duration-500 transform translate-y-10 opacity-0">
+      <div class="relative backdrop-blur-sm bg-white/40 p-12 rounded-2xl shadow-2xl border border-purple-300">
+        <div class="absolute -top-12 -right-12 w-28 h-28 bg-purple-500 rounded-full opacity-30 animate-pulse-slow"></div>
+        <div class="absolute -bottom-8 -left-8 w-20 h-20 bg-purple-700 rounded-full opacity-30 animate-pulse-slow" style="animation-delay:1s;"></div>
+        <h2 class="text-4xl font-bold mb-6 relative inline-block text-purple-800 drop-shadow-[0_0_8px_rgba(126,91,239,0.8)]">Experience NeatEdge in Action</h2>
+        <p class="text-xl mb-10 text-purple-700">
+          Try our intelligent email cleanup system and watch your inbox transform instantly.
+          <br />
+          <span class="text-purple-600 font-medium">Reduce digital clutter and your carbon footprint in one click.</span>
+        </p>
+        <a href="/" class="inline-flex items-center gap-2 bg-gradient-to-r from-neatpurple to-neatpurple hover:from-purple-700 hover:to-purple-900 text-white text-lg px-8 py-4 rounded-lg shadow-2xl hover:shadow-purple-900 transition-all relative group">
+          <span class="relative z-10">Clean Your Inbox</span>
+          <span class="transform group-hover:translate-x-1 transition-transform">→</span>
+          <span class="absolute inset-0 bg-white rounded-lg transform scale-0 group-hover:scale-100 transition-transform duration-300 opacity-20"></span>
+        </a>
+        <div class="mt-8 flex items-center justify-center gap-2">
+          <span class="inline-flex items-center justify-center w-5 h-5 bg-neatgreen rounded-full">
+            <span class="text-white text-xs">✓</span>
+          </span>
+          <span class="text-sm text-purple-700">No account required – try it now</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-gradient-to-r from-purple-600 to-blue-600 text-white py-12 px-4">
+    <div class="max-w-7xl mx-auto">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div>
+          <h3 class="text-xl font-bold mb-4 flex items-center">
+            <span class="w-8 h-8 bg-white rounded-full flex items-center justify-center text-purple-600 mr-2">N</span> NeatEdge
+          </h3>
+          <p class="text-gray-100">Smarter, Greener Email Management – All on the Edge</p>
+        </div>
+        <div>
+          <h3 class="text-xl font-bold mb-4">Quick Links</h3>
+          <ul class="space-y-2">
+            <li><a href="#home" class="text-gray-100 hover:text-white hover:underline">Home</a></li>
+            <li><a href="#features" class="text-gray-100 hover:text-white hover:underline">Features</a></li>
+            <li><a href="#demo" class="text-gray-100 hover:text-white hover:underline">Demo</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-xl font-bold mb-4">Contact</h3>
+          <p class="text-gray-100">Built by Team Aroha</p>
+         <div class="flex space-x-4 mt-4">
+  <!-- LinkedIn Icon -->
+  <a class="text-gray-100 hover:text-white">
+    <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+    </svg>
+  </a> <!-- LinkedIn -->
+
+  <!-- Twitter Icon -->
+  <a class="text-gray-100 hover:text-white">
+    <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M23.953 4.57a10 10 0 01-2.825.775 4.982 4.982 0 002.163-2.723 10.04 10.04 0 01-3.127 1.195 4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+    </svg>
+  </a> <!-- Twitter -->
+  <a  target="_blank" aria-label="GitHub" class="text-white hover:text-gray-300">
+  <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-6 h-6" viewBox="0 0 24 24">
+    <path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6v-2c-3.2.7-3.8-1.4-3.8-1.4-.5-1.2-1.2-1.5-1.2-1.5-1-.7.1-.7.1-.7 1.1.1 1.6 1.2 1.6 1.2 1 .1 1.6-.8 2.2-1.2.1-.7.4-1.1.7-1.4-2.5-.3-5.1-1.2-5.1-5.6 0-1.2.4-2.1 1.1-2.9-.1-.3-.5-1.3.1-2.7 0 0 .9-.3 2.9 1.1a10.2 10.2 0 0 1 5.3 0c2-1.4 2.9-1.1 2.9-1.1.6 1.4.2 2.4.1 2.7.7.8 1.1 1.7 1.1 2.9 0 4.4-2.6 5.3-5.1 5.6.4.3.7.9.7 1.8v2.7c0 .3.2.7.8.6A10.5 10.5 0 0 0 23.5 12C23.5 5.7 18.3.5 12 .5z"/>
+  </svg>
+</a>
+
+ 
+</div>
+
+        </div>
+      </div>
+      <div class="border-t border-white/20 mt-8 pt-8 text-center">
+        <p class="text-gray-100">&copy; 2025 NeatEdge. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JS Logic -->
+  <script>
+    // Feature Cards
+    const features = [
+      { title: "AI-Powered Cleanup", desc: "Intelligently detects spam and organizes email using NLP.", emoji: "🧠", color: "#9b87f5" },
+      { title: "Carbon Footprint Estimator", desc: "Estimates your email's carbon output and offers cleanup solutions.", emoji: "♻️", color: "#6E59A5" },
+      { title: "Adaptive Intelligence", desc: "Gets smarter with each use, tailoring email organization to you.", emoji: "🧬", color: "#7E69AB" },
+      { title: "Edge-Based Privacy", desc: "Your data stays on your device – private, secure, and fast.", emoji: "🔒", color: "#8E9196" }
+    ];
+    const featureContainer = document.getElementById('feature-cards');
+    features.forEach((f, i) => {
+      const div = document.createElement('div');
+      div.className = `bg-white rounded-xl p-8 shadow-md transform translate-y-10 opacity-0 hover:shadow-xl hover:-translate-y-2 transition-all`;
+      div.style.transitionDelay = `${(i+1)*100}ms`;
+      div.innerHTML = `
+        <div class="flex items-center mb-6 justify-center">
+          <div class="w-16 h-16 rounded-full flex items-center justify-center relative overflow-hidden">
+            <div class="absolute inset-0 opacity-20" style="background-color:${f.color}"></div>
+            <span class="text-4xl relative z-10 animate-float">${f.emoji}</span>
+          </div>
+        </div>
+        <h3 class="text-xl font-semibold text-center mb-3 text-purple-700">${f.title}</h3>
+        <p class="text-gray-600 text-center">${f.desc}</p>
+      `;
+      featureContainer.appendChild(div);
+      new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('opacity-100');
+            entry.target.classList.remove('translate-y-10', 'opacity-0');
+            obs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 }).observe(div);
+    });
+
+    // Steps
+    const steps = [
+      { title: "Connect Securely", desc: "Authenticate your email with secure IMAP integration.", icon: "🔒" },
+      { title: "Smart Analysis", desc: "Scans for patterns and relevance using AI.", icon: "🧠" },
+      { title: "Cleanup & Categorize", desc: "Removes junk and organizes automatically.", icon: "✨" },
+      { title: "Track Carbon Impact", desc: "Visualize how much carbon you saved.", icon: "🌱" }
+    ];
+    const stepsContainer = document.getElementById('steps');
+    steps.forEach((s, i) => {
+      const div = document.createElement('div');
+      div.className = 'bg-white rounded-xl p-8 shadow-md transform translate-y-10 opacity-0 hover:shadow-xl hover:-translate-y-2 transition-all';
+      div.style.transitionDelay = `${(i+1)*100}ms`;
+      div.innerHTML = `
+        <div class="flex items-center justify-center mb-6">
+          <div class="relative">
+            <div class="absolute -inset-3 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full opacity-20 blur-sm animate-pulse-slow"></div>
+            <span class="flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-purple-600 to-blue-600 text-white font-bold text-2xl relative">${i+1}</span>
+          </div>
+        </div>
+        <h3 class="text-xl font-semibold text-center mb-3">${s.title}</h3>
+        <div class="text-5xl mb-4 flex justify-center animate-float">${s.icon}</div>
+        <p class="text-gray-600 text-center">${s.desc}</p>
+      `;
+      stepsContainer.appendChild(div);
+      new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('opacity-100');
+            entry.target.classList.remove('translate-y-10', 'opacity-0');
+            obs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 }).observe(div);
+    });
+
+    // Demo Animation
+    const demoRef = document.getElementById('demoRef');
+    new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('opacity-100');
+          entry.target.classList.remove('translate-y-10', 'opacity-0');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 }).observe(demoRef);
+  </script>
+
+</body>
+</html>

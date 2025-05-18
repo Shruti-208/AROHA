@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoClean - Sustainable Digital Waste Management</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <style>
+        /* General Styles */
+body {
+    font-family: 'Montserrat', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    padding-top: 76px;
+    background: #fff5f8;
+}
+
+/* Main Grid Layout */
+.main-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    padding: 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.grid-section {
+    background: #fff;
+    border-radius: 10px;
+    padding: 1.5rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 15px rgba(126, 91, 239, 0.1);
+    border: 1px solid rgba(126, 91, 239, 0.2);
+}
+
+/* Navigation */
+.navbar {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
+/* Get Started Section */
+.card {
+    border: none;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 4px 15px rgba(126, 91, 239, 0.1);
+}
+
+.form-control, .form-select {
+    background: #fff;
+    border: 1px solid rgba(126, 91, 239, 0.3);
+    border-radius: 5px;
+    padding: 0.8rem;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #7e5bef;
+    box-shadow: 0 0 0 0.2rem rgba(126, 91, 239, 0.25);
+}
+
+/* Duplicate Files Section */
+.list-group-item {
+    background: linear-gradient(135deg, rgba(126, 91, 239, 0.05), rgba(79, 70, 229, 0.05));
+    border: 1px solid rgba(126, 91, 239, 0.2);
+    margin-bottom: 0.5rem;
+    border-radius: 5px;
+}
+
+/* Carbon Emission Section */
+.carbon-metric {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+    background: linear-gradient(135deg, rgba(126, 91, 239, 0.1), rgba(79, 70, 229, 0.1));
+    border-radius: 5px;
+    border: 1px solid rgba(126, 91, 239, 0.2);
+    margin-bottom: 1rem;
+}
+
+/* Chat Bot */
+.chat-bot {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.chat-bot .btn {
+    width: 60px;
+    height: 60px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.chat-window {
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    width: 350px;
+    height: 500px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    display: none;
+    flex-direction: column;
+}
+
+.chat-window.active {
+    display: flex;
+}
+
+.chat-header {
+    padding: 1rem;
+    background: linear-gradient(135deg, #7e5bef, #4f46e5);
+    color: #fff;
+    border-radius: 10px 10px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chat-messages {
+    flex: 1;
+    padding: 1rem;
+    overflow-y: auto;
+}
+
+.message {
+    margin-bottom: 1rem;
+    padding: 0.8rem;
+    border-radius: 5px;
+    max-width: 80%;
+}
+
+.user-message {
+    background: linear-gradient(135deg, #7e5bef, #4f46e5);
+    color: #fff;
+    margin-left: auto;
+}
+
+.bot-message {
+    background: linear-gradient(135deg, rgba(126, 91, 239, 0.1), rgba(79, 70, 229, 0.1));
+    border: 1px solid rgba(126, 91, 239, 0.2);
+    margin-right: auto;
+}
+
+.chat-input {
+    padding: 1rem;
+    border-top: 1px solid #dee2e6;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.chat-input input {
+    flex: 1;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    padding: 0.5rem;
+}
+
+.chat-input button {
+    background: linear-gradient(135deg, #7e5bef, #4f46e5);
+    border: none;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.chat-input button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3);
+}
+
+/* Animations */
+.animate__animated {
+    animation-duration: 0.5s;
+}
+
+.animate__fadeInUp {
+    animation-name: fadeInUp;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translate3d(0, 20px, 0);
+    }
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+/* SDG Section Specific */
+.sdg-info {
+    background: linear-gradient(135deg, rgba(126, 91, 239, 0.1), rgba(79, 70, 229, 0.1));
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+    border: 1px solid rgba(126, 91, 239, 0.2);
+}
+
+.sdg-info h5 {
+    color: #333;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.sdg-info p {
+    color: #666;
+}
+
+.btn-sdg {
+    background: linear-gradient(135deg, #7e5bef, #4f46e5);
+    border: none;
+    color: white;
+    font-weight: 600;
+    padding: 1rem;
+    transition: all 0.3s ease;
+}
+
+.btn-sdg:hover {
+    background: linear-gradient(135deg, #4f46e5, #7e5bef);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+    color: white;
+}
+
+#sdg-12 .card {
+    border: 1px solid #dee2e6;
+}
+
+#sdg-12 .card:hover {
+    border-color: #7e5bef;
+}
+
+/* Button Styles */
+.btn {
+    padding: 0.8rem 1.5rem;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    font-weight: 600;
+}
+
+/* Functional Buttons (Analyze, Scan, etc.) */
+.btn-success {
+    background: linear-gradient(135deg, #7e5bef, #4f46e5);
+    border: none;
+    color: white;
+}
+
+.btn-success:hover {
+    background: linear-gradient(135deg, #4f46e5, #7e5bef);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+    color: white;
+}
+
+/* Warning Buttons (Clean Up, Optimize) */
+.btn-warning {
+    background: linear-gradient(135deg, #7e5bef, #4f46e5);
+    border: none;
+    color: white;
+}
+
+.btn-warning:hover {
+    background: linear-gradient(135deg, #4f46e5, #7e5bef);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+    color: white;
+}
+
+/* Danger Buttons */
+.btn-danger {
+    background: linear-gradient(135deg, #7e5bef, #4f46e5);
+    border: none;
+    color: white;
+}
+
+.btn-danger:hover {
+    background: linear-gradient(135deg, #4f46e5, #7e5bef);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+    color: white;
+}
+
+/* Email Section Specific */
+.email-info {
+    background: linear-gradient(135deg, rgba(126, 91, 239, 0.1), rgba(79, 70, 229, 0.1));
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+    border: 1px solid rgba(126, 91, 239, 0.2);
+}
+
+.email-info h5 {
+    color: #333;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.email-info p {
+    color: #666;
+    line-height: 1.6;
+}
+
+#email-cleanup .card {
+    border: 1px solid #dee2e6;
+}
+
+#email-cleanup .card:hover {
+    border-color: #28a745;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .main-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .chat-window {
+        width: 100%;
+        height: 100%;
+        bottom: 0;
+        right: 0;
+        border-radius: 0;
+    }
+    
+    .chat-header {
+        border-radius: 0;
+    }
+}
+
+/* Hover Effects */
+.grid-section:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(126, 91, 239, 0.15);
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 6px 20px rgba(126, 91, 239, 0.15);
+    transition: all 0.3s ease;
+}
+
+/* Section Title Icons */
+.grid-section h2 i {
+    margin-right: 10px;
+    color: #7e5bef;
+    font-size: 1.8rem;
+    vertical-align: middle;
+}
+
+.grid-section h2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: #333;
+    font-weight: 600;
+}
+
+/* Hover effect for icons */
+.grid-section:hover h2 i {
+    transform: scale(1.1);
+    transition: transform 0.3s ease;
+}
+
+/* Toast Notification Styles */
+.toast {
+    background: #fff;
+    border: none;
+    box-shadow: 0 4px 15px rgba(126, 91, 239, 0.2);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.toast-header {
+    background: linear-gradient(135deg, rgba(126, 91, 239, 0.1), rgba(79, 70, 229, 0.1));
+    border-bottom: 1px solid rgba(126, 91, 239, 0.2);
+    padding: 0.75rem 1rem;
+}
+
+.toast-header i {
+    color: #7e5bef;
+    font-size: 1.2rem;
+}
+
+.toast-body {
+    padding: 1rem;
+    background: #fff;
+}
+
+.toast-body i {
+    color: #7e5bef;
+    font-size: 1.5rem;
+}
+
+.btn-close {
+    color: #7e5bef;
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+}
+
+.btn-close:hover {
+    opacity: 1;
+}
+
+/* Toast Animation */
+.toast.show {
+    animation: slideInRight 0.5s ease-out;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#"><i class="fas fa-leaf"></i> NeatEdge</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="./firsthome.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-success ms-2" href="#get-started">Get Started</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Grid -->
+    <div class="main-grid">
+        <!-- Get Started Section -->
+        <section id="get-started" class="grid-section">
+            <div class="container">
+                <h2 class="text-center mb-4"><i class="fas fa-rocket"></i> Get Started</h2>
+                <div class="card shadow">
+                    <div class="card-body">
+                        <form id="uploadForm">
+                            <div class="mb-3">
+                                <label class="form-label">Select Folder</label>
+                                <input type="file" class="form-control" id="folderInput" webkitdirectory directory>
+                            </div>
+                            <button type="submit" class="btn btn-success w-100">Analyze Files</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Duplicate Files Section -->
+        <section id="duplicate-files" class="grid-section">
+            <div class="container">
+                <h2 class="text-center mb-4"><i class="fas fa-copy"></i> Duplicate Files Detection</h2>
+                <div class="card shadow">
+                    <div class="card-body">
+                        <form id="duplicateForm">
+                            <div class="mb-3">
+                                <label class="form-label">Select Folder to Scan for Duplicates</label>
+                                <input type="file" class="form-control" id="duplicateFolderInput" webkitdirectory directory>
+                            </div>
+                            <button type="submit" class="btn btn-success w-100">Scan for Duplicates</button>
+                        </form>
+                        <div id="duplicateResults" class="mt-4" style="display: none;">
+                            <h5>Duplicate Files Found</h5>
+                            <div id="duplicateList" class="list-group mb-3"></div>
+                            <button id="cleanupDuplicates" class="btn btn-danger w-100">Clean Up Duplicates</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Carbon Emission Section -->
+        <section id="carbon-emission" class="grid-section">
+            <div class="container">
+                <h2 class="text-center mb-4"><i class="fas fa-leaf"></i> Carbon Emission Analysis</h2>
+                <div class="card shadow">
+                    <div class="card-body">
+                        <form id="carbonForm">
+                            <div class="mb-3">
+                                <label class="form-label">Select Folder for Carbon Analysis</label>
+                                <input type="file" class="form-control" id="carbonFolderInput" webkitdirectory directory>
+                            </div>
+                            <button type="submit" class="btn btn-success w-100">Analyze Carbon Impact</button>
+                        </form>
+                        <div id="carbonResults" class="mt-4" style="display: none;">
+                            <h5>Carbon Emission Analysis</h5>
+                            <div id="carbonDetails" class="mb-3"></div>
+                            <button id="optimizeCarbon" class="btn btn-warning w-100">Optimize Storage</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Email Cleanup Section -->
+        <section id="email-cleanup" class="grid-section">
+            <div class="container">
+                <h2 class="text-center mb-4"><i class="fas fa-envelope"></i> Email Cleanup</h2>
+                <div class="card shadow">
+                    <div class="card-body">
+                        <div class="email-info">
+                            <h5>Smart Email Management</h5>
+                            <p>Clean up your inbox, remove unnecessary attachments, and optimize email storage to reduce your digital carbon footprint.</p>
+                        </div>
+                        <form id="emailForm">
+                            <button type="button" class="btn btn-success w-100" onclick="window.location.href='index.html';">
+                                <i class="fas fa-envelope me-2"></i> Proceed
+                            </button>
+                        </form>
+                        
+                        <div id="emailResults" class="mt-4" style="display: none;">
+                            <h5>Email Storage Analysis</h5>
+                            <div id="emailDetails" class="mb-3"></div>
+                            <button id="cleanupEmails" class="btn btn-warning w-100">Clean Up Emails</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SDG-12 Section -->
+        <section id="sdg-12" class="grid-section">
+            <div class="container">
+                <h2 class="text-center mb-4"><i class="fas fa-globe"></i> SDG-12 Impact</h2>
+                <div class="card shadow">
+                    <div class="card-body">
+                        <div class="sdg-info mb-4">
+                            <h5 class="text-center">Sustainable Consumption and Production</h5>
+                            <p class="text-center">Track your digital consumption patterns and their environmental impact</p>
+                        </div>
+                        <div class="text-center">
+                            <button class="btn btn-sdg w-100" onclick="window.location.href='home3.html';">Learn More</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Chat Bot -->
+    <div class="chat-bot">
+        <button class="btn btn-success rounded-circle" id="chatToggle">
+            <i class="fas fa-robot"></i>
+        </button>
+        <div class="chat-window" id="chatWindow">
+            <div class="chat-header">
+                <h5>EcoClean Assistant</h5>
+                <button class="btn-close" id="closeChat"></button>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <!-- Messages will be added here -->
+            </div>
+            <div class="chat-input">
+                <input type="text" id="userInput" placeholder="Ask a question...">
+                <button class="btn btn-success" id="sendMessage">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="optimizeToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <i class="fas fa-check-circle text-success me-2"></i>
+                <strong class="me-auto">Success</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-shield-alt text-success me-3"></i>
+                    <div>
+                        <h6 class="mb-1">Storage Optimized Successfully!</h6>
+                        <p class="mb-0">Your digital carbon footprint has been reduced.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+  <script>// Chat Bot Functionality
+const chatToggle = document.getElementById('chatToggle');
+const chatWindow = document.getElementById('chatWindow');
+const closeChat = document.getElementById('closeChat');
+const userInput = document.getElementById('userInput');
+const sendMessage = document.getElementById('sendMessage');
+const chatMessages = document.getElementById('chatMessages');
+
+// Chat bot responses
+;
+
+// Toggle chat window
+chatToggle.addEventListener('click', () => {
+    chatWindow.classList.add('active');
+    userInput.focus();
+});
+
+closeChat.addEventListener('click', () => {
+    chatWindow.classList.remove('active');
+});
+
+// Close chat window when clicking outside
+document.addEventListener('click', (e) => {
+    if (!chatWindow.contains(e.target) && !chatToggle.contains(e.target)) {
+        chatWindow.classList.remove('active');
+    }
+});
+
+// Handle message sending
+sendMessage.addEventListener('click', () => {
+    const message = userInput.value.trim();
+    if (message) {
+        addMessage(message, 'user');
+        userInput.value = '';
+        processUserMessage(message);
+    }
+});
+
+// Handle enter key
+userInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        sendMessage.click();
+    }
+});
+
+// Add message to chat
+function addMessage(message, type) {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message ${type}-message`;
+    messageDiv.textContent = message;
+    chatMessages.appendChild(messageDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function processUserMessage(message) {
+    const lowerMessage = message.toLowerCase();
+    let response = '';
+
+    if (lowerMessage.includes('hello') || lowerMessage.includes('hi')) {
+        response = responses['hello'];
+    } else if (lowerMessage.includes('help') || lowerMessage.includes('what can you do')) {
+        response = responses['help'];
+    } else if (lowerMessage.includes('how to use')) {
+        response = responses['how to use'];
+    } else if (lowerMessage.includes('what is digital waste')) {
+        response = responses['what is digital waste'];
+    } else if (lowerMessage.includes('services')) {
+        response = responses['services'];
+    } else if (lowerMessage.includes('duplicate files')) {
+        response = responses['duplicate files'];
+    } else if (lowerMessage.includes('carbon footprint')) {
+        response = responses['carbon footprint'];
+    } else if (lowerMessage.includes('email cleanup')) {
+        response = responses['email cleanup'];
+    } else if (lowerMessage.includes('sdg 12')) {
+        response = responses['sdg 12'];
+    } else if (lowerMessage.includes('benefits')) {
+        response = responses['what are the benefits'];
+    } else if (lowerMessage.includes('reduce carbon')) {
+        response = responses['how to reduce carbon'];
+    } else if (lowerMessage.includes('what is sdg')) {
+        response = responses['what is sdg 12'];
+    } else if (lowerMessage.includes('optimize storage')) {
+        response = responses['how to optimize storage'];
+    } else if (lowerMessage.includes('carbon analysis')) {
+        response = responses['what is carbon analysis'];
+    } else if (lowerMessage.includes('clean emails')) {
+        response = responses['how to clean emails'];
+    } else if (lowerMessage.includes('sustainable digital waste management')) {
+        if (lowerMessage.includes('importance')) {
+            response = responses['importance of sustainable digital waste management'];
+        } else {
+            response = responses['what is sustainable digital waste management'];
+        }
+    } else if (lowerMessage.includes('digital footprint')) {
+        if (lowerMessage.includes('importance')) {
+            response = responses['importance of digital footprint'];
+        } else {
+            response = responses['what is digital footprint'];
+        }
+    } else if (lowerMessage.includes('co2') || lowerMessage.includes('carbon')) {
+        if (lowerMessage.includes('impact')) {
+            response = responses['impact of co2 emission on environment'];
+        } else if (lowerMessage.includes('reduce')) {
+            response = responses['how to reduce co2 emissions'];
+        }
+    } else if (lowerMessage.includes('digital sustainability')) {
+        response = responses['why is digital sustainability important'];
+    } else if (lowerMessage.includes('digital waste') && lowerMessage.includes('affect')) {
+        response = responses['how does digital waste affect environment'];
+    } else {
+        response = responses['default'];
+    }
+
+    setTimeout(() => addMessage(response, 'bot'), 500);
+}
+
+// File Analysis Functionality
+const uploadForm = document.getElementById('uploadForm');
+const folderInput = document.getElementById('folderInput');
+
+// ... rest of the script unchanged ...
+</script>
+</body>
+</html>

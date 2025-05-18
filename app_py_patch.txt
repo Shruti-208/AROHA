@@ -1,0 +1,28 @@
+# Patch for app.py to include total CO2 and category in fetch_emails response
+
+# In fetch_gmail_emails function, change return statement to:
+# return {"emails": results, "total_co2": total_co2}
+
+# In /connect route, change:
+# emails = fetch_gmail_emails(user_email, app_password)
+# session['emails'] = emails if isinstance(emails, list) else []
+# to:
+# emails_data = fetch_gmail_emails(user_email, app_password)
+# emails = emails_data["emails"] if isinstance(emails_data, dict) else []
+# session['emails'] = emails
+
+# In /fetch-emails route, change to:
+# @app.route('/fetch-emails', methods=['POST'])
+# def fetch_emails():
+#     user_email = request.form['email']
+#     app_password = request.form['password']
+#     emails_data = fetch_gmail_emails(user_email, app_password)
+#     if isinstance(emails_data, dict):
+#         emails = emails_data["emails"]
+#         total_co2 = emails_data["total_co2"]
+#         return jsonify({"emails": emails, "total_co2": total_co2})
+#     else:
+#         return jsonify({"error": emails_data}), 500
+
+# In /delete-emails route, change success message to:
+# return jsonify({"message": f"Deleted {len(email_ids)} emails successfully."})
